@@ -1,0 +1,218 @@
+﻿<Window x:Class="PhysicsEngineUI.MainWindow" MinWidth="1200"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="KinetX - Physics Engine" WindowState="Maximized" Height="1080" Width="1920" ResizeMode="CanResizeWithGrip" Background="#1e1e1e">
+
+    <Window.Resources>
+        <!-- Label Style -->
+        <Style x:Key="LabelStyle" TargetType="Label">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="#E0E0E0"/>
+            <Setter Property="Margin" Value="0 8 0 4"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <!-- TextBox Style -->
+        <Style x:Key="InputBoxStyle" TargetType="TextBox">
+            <Setter Property="Padding" Value="8,6"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="BorderBrush" Value="#555555"/>
+            <Setter Property="BorderThickness" Value="1.5"/>
+            <Setter Property="Background" Value="#2E2E2E"/>
+            <Setter Property="Foreground" Value="#E0E0E0"/>
+            <Setter Property="Margin" Value="0 5 0 10"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="4"
+                        SnapsToDevicePixels="True">
+                            <ScrollViewer Margin="0" x:Name="PART_ContentHost"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Button Style -->
+        <Style x:Key="PrimaryButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Azure"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="10,6"/>
+            <Setter Property="Margin" Value="0 10 0 0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                            CornerRadius="5"
+                            SnapsToDevicePixels="True">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,2"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#005A9E"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#003F6B"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Background" Value="#AAA"/>
+                                <Setter Property="Foreground" Value="#666"/>
+                                <Setter Property="Cursor" Value="Arrow"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!-- ScrollViewer Style -->
+        <Style x:Key="HiddenScrollViewer" TargetType="ScrollViewer">
+            <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="HorizontalScrollBarVisibility" Value="Disabled"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollViewer">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="0"/>
+                                <!-- Hides vertical scrollbar -->
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="0"/>
+                                <!-- Hides horizontal scrollbar -->
+                            </Grid.RowDefinitions>
+
+                            <ScrollContentPresenter Grid.Column="0" Grid.Row="0"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+    </Window.Resources>
+
+    <Grid>
+        <!-- Main Layout: Canvas and Control Panel -->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="1.5*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Canvas Area -->
+        <Canvas Name="physicsCanvas" Background="#2E2E2E" Grid.Column="0" />
+
+        <!-- Control Panel -->
+        <Border Grid.Column="1" Background="#1E1E1E" Padding="20">
+            <!-- Split into 2 vertical halves -->
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <!-- Top half -->
+                    <RowDefinition Height="*" />
+                    <!-- Bottom half -->
+                </Grid.RowDefinitions>
+
+                <!-- TOP HALF -->
+                <StackPanel Orientation="Vertical" Grid.Row="0">
+                    <!-- Global Variables -->
+                    <Border 
+                        Background="#2E2E2E" 
+                        CornerRadius="6"
+                        Padding="4">
+                        <TextBlock Text="Global Variables" TextAlignment="Center" FontSize="22" FontWeight="DemiBold" Foreground="White" FontFamily="Palatino Linotype"/>
+                    </Border>
+
+                    <StackPanel Margin="0 0 0 20">
+                        <Label Content="Gravity (m/s²):" Style="{StaticResource LabelStyle}" />
+                        <TextBox Name="GravityInput" Text="9.8" Style="{StaticResource InputBoxStyle}"/>
+                        <Label Content="Mass (Kg):" Style="{StaticResource LabelStyle}"/>
+                        <TextBox Name="MassInput" Text="1" Style="{StaticResource InputBoxStyle}"/>
+                        <Label Content="Friction (N):" Style="{StaticResource LabelStyle}"/>
+                        <TextBox Name="FrictionInput" Text="0.1" Style="{StaticResource InputBoxStyle}"/>
+                        <Button Content="Set" Width="100" Style="{StaticResource PrimaryButtonStyle}" 
+                            HorizontalAlignment="Center" FontFamily="Palatino Linotype" FontSize="14" />
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- BOTTOM HALF -->
+                <ScrollViewer Grid.Row="1"  Style="{StaticResource HiddenScrollViewer}" CanContentScroll="True" Margin="0,0,10,0">
+                    <Border Name="CollisionSection" 
+                        Background="#2E2E2E"
+                        CornerRadius="10"
+                        Padding="15"
+                        Margin="0"
+                        BorderBrush="#1E1E1E"
+                        BorderThickness="1"
+                        MinHeight="600"
+                        MaxHeight="800"
+                        HorizontalAlignment="Stretch">
+
+                        <Border.Effect>
+                            <DropShadowEffect ShadowDepth="2" BlurRadius="8" Color="#000000" Opacity="0.4"/>
+                        </Border.Effect>
+
+                        <StackPanel Orientation="Vertical" >
+
+                            <TextBlock Text="Collision Settings" FontSize="18" FontWeight="Bold" Foreground="White" Margin="0 0 0 15"/>
+
+                            <Label Content="Select Object A:" Foreground="White"/>
+                            <ComboBox Name="ObjectASelector" SelectedIndex="0" Margin="0 0 0 15">
+                                <ComboBoxItem IsEnabled="False" Foreground="Gray">Select Object A</ComboBoxItem>
+                                <ComboBoxItem>Ball</ComboBoxItem>
+                                <ComboBoxItem>Block</ComboBoxItem>
+                            </ComboBox>
+
+                            <Label Content="Collider Type:" Foreground="White"/>
+                            <ComboBox Name="ColliderTypeSelector" Margin="0 0 0 15">
+                                <ComboBoxItem>Circle</ComboBoxItem>
+                                <ComboBoxItem>Box</ComboBoxItem>
+                                <ComboBoxItem>Polygon</ComboBoxItem>
+                            </ComboBox>
+
+                            <CheckBox Content="Enable Collision" IsChecked="True" Foreground="White" Margin="0 0 0 15"/>
+
+                            <Label Content="Restitution (Bounciness):" Foreground="White"/>
+                            <Slider Minimum="0" Maximum="1" TickFrequency="0.1" Value="0.5" Margin="0 0 0 15"/>
+
+                            <Label Content="Friction:" Foreground="White"/>
+                            <Slider Minimum="0" Maximum="1" TickFrequency="0.1" Value="0.5" Margin="0 0 0 15"/>
+
+                            <Label Content="Mass (Object A):" Foreground="White"/>
+                            <TextBox Style="{StaticResource InputBoxStyle}" Margin="0 0 0 15"/>
+
+                            <Label Content="Mass (Object B):" Foreground="White"/>
+                            <TextBox Style="{StaticResource InputBoxStyle}" Margin="0 0 0 15"/>
+
+                            <Label Content="Collision Mode:" Foreground="White"/>
+                            <ComboBox Margin="0 0 0 25">
+                                <ComboBoxItem>Elastic</ComboBoxItem>
+                                <ComboBoxItem>Inelastic</ComboBoxItem>
+                                <ComboBoxItem>Perfectly Inelastic</ComboBoxItem>
+                            </ComboBox>
+
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                <Button Content="Apply" Style="{StaticResource PrimaryButtonStyle}" Margin="0 0 10 0" Width="80"/>
+                                <Button Content="Reset" Style="{StaticResource PrimaryButtonStyle}" Width="80"/>
+                            </StackPanel>
+
+                        </StackPanel>
+                    </Border>
+                </ScrollViewer>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
