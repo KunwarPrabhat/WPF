@@ -8,6 +8,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = WPF_first
-build_property.ProjectDir = C:\Users\rkpra\Desktop\WPF_first\WPF_first\
+build_property.ProjectDir = c:\Users\rkpra\Desktop\WPF_first\WPF_first\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
